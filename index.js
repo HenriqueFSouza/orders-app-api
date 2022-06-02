@@ -7,7 +7,7 @@ const uuid = require("uuid") // Library to generate the id
 
 const app = express()
 
-const port = 3000
+const port = 3001
 
 app.use (express.json()) // warning the body we´ll use json 
 
@@ -118,7 +118,7 @@ app.patch('/order/:id', checkOrderdId, method , (request, response) => {
 })
  
 
-app.listen(3000, () => { 
+app.listen(3001, () => { 
     console.log(`🚀Server started on port ${port}`)
 }) 
 
