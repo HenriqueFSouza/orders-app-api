@@ -1,6 +1,8 @@
 
 // Some require to start the application
 
+import cors from 'cors'
+
 const express = require("express")
 
 const uuid = require("uuid") // Library to generate the id
