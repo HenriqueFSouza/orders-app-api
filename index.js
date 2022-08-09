@@ -11,6 +11,8 @@ const port = 3001
 
 app.use (express.json()) // warning the body we´ll use json 
 
+app.use(cors()) // allows the front end acess to the API
+
 const orders = []   // const that keep the data
 
 // Middlewear to check the order id 
