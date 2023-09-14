@@ -1,7 +1,7 @@
 
 // Some require to start the application
 
-import cors from 'cors'
+const cors = require("cors")
 
 const express = require("express")
 
@@ -13,7 +13,9 @@ const port = 3001
 
 app.use (express.json()) // warning the body we´ll use json 
 
-app.use(cors()) // allows the front end acess to the API
+app.use(cors())
+
+
 
 const orders = []   // const that keep the data
 
@@ -25,7 +27,7 @@ const checkOrderdId = (request, response, next) => {
     const index = orders.findIndex(order => order.id === id)
 
     if(index<0) { 
-        return response.status(404).json({message: "User not found"})
+        return response.status(404).json({message: "Order not found"})
     }
 
     request.orderIndex = index
@@ -36,21 +38,22 @@ const checkOrderdId = (request, response, next) => {
 // Middlewear to show the method and url 
 
 const method = (request, response, next) => { 
-    console.log(request.method)
-    console.log(request.url)
+    console.log('Método - ',request.method)
+    console.log('URL - ',request.url)
     next()
 }
+
 // POST method to creat new ordes
 
 app.post('/order',  method , (request, response) => { 
     
     const { order, name, price } = request.body
 
-    const user = {id:uuid.v4(), order, name ,price, status: "Em preparação"}
+    const newOrder = {id:uuid.v4(), order, name ,price, status: "Em preparação"}
 
-    orders.push(user)
+    orders.push(newOrder)
 
-    return response.json(orders)
+    return response.json(newOrder)
 })
 
 
@@ -70,11 +73,11 @@ app.put('/order/:id', checkOrderdId, method , (request, response) => {
 
     const { order, name, price, status } = request.body
 
-    const upadatedOrder = { id, order, name, price, status}
+    const updatedOrder = { id, order, name, price, status}
 
-    orders[index] = upadatedOrder
+    orders[index] = updatedOrder
 
-    return response.json(upadatedOrder)
+    return response.json(updatedOrder)
 })
 
 // DELETE method 
@@ -110,19 +113,15 @@ app.patch('/order/:id', checkOrderdId, method , (request, response) => {
 
     const id = request.orderId
 
-    const { order, name, price, status } = request.body
+    orders[index] = { ...orders[index], status: "Pronto" }
 
-    const upadatedOrder = { id, order, name , price, status } 
+    const updatedOrder = orders[index]
 
-    orders[index] = upadatedOrder
-
-    console.log(upadatedOrder)
-
-    return response.json(upadatedOrder)
+    return response.json(updatedOrder)
 })
  
 
-app.listen(3001, () => { 
-    console.log(`🚀Server started on port ${port}`)
+app.listen(port, () => { 
+    console.log(`🚀 Server started on port ${port}`)
 }) 
 
